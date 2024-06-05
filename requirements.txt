@@ -1,0 +1,9 @@
+pandas
+requests
+bs4
+tqdm
+fake_useragent
+lxml
+openpyxl
+selenium
+urlparse
