@@ -8,17 +8,12 @@ from urllib.parse import urlparse
 import random
 import time
 import pandas as pd
+import re
 
 
 url = "https://www.pcmag.com/categories/processors/brands/intel?page={}"
 path = "./chromedriver.exe"
 chrome_options = Options()
-# chrome_options.add_argument("--headless")  # Run the browser in headless mode
-# chrome_options.add_argument("--no-sandbox")  # Bypass the OS security model
-# chrome_options.add_argument(
-#     "--disable-dev-shm-usage"
-# )  # Overcome limited resource problems
-# chrome_options.add_argument("--disable-features=InterestCohort")
 service = Service(path)
 driver = webdriver.Chrome(service=service, options=chrome_options)
 
@@ -28,6 +23,7 @@ baseUrl = f"{parsed_url.scheme}://{parsed_url.netloc}"
 reviews_dict = {
     "product_url": [],
     "product_name": [],
+    "product_cost": [],
     "review_title": [],
     "review_content": [],
     "review_rating": [],
@@ -53,6 +49,19 @@ try:
             lnk = j.find("a")["href"]
             link = baseUrl + lnk
             driver.get(link)
+
+            # Product Cost
+            cost = j.find(
+                "a",
+                class_="shop-now group flex flex-wrap items-center text-sm font-semibold text-gray-700 no-underline hover:text-gray-700 md:text-base",
+            ).text.strip()
+
+            extract_price = lambda text: (
+                float(re.search(r"\$(\d[\d,]*\.\d{2})", text).group(1).replace(",", ""))
+                if re.search(r"\$(\d[\d,]*\.\d{2})", text)
+                else None
+            )
+            productCost = extract_price(cost)
 
             # Product Name
             title = (
@@ -89,6 +98,7 @@ try:
             )
 
             reviews_dict["product_url"].append(link)
+            reviews_dict["product_cost"].append(productCost)
             reviews_dict["review_title"].append(ttle)
             reviews_dict["product_name"].append(title)
             reviews_dict["review_content"].append(content)
