@@ -9,9 +9,9 @@ import time
 import re
 import os
 
-aa = "https://www.flipkart.com/intel-core-i3-4130t-2-9-ghz-lga-1150-socket-2-cores-4-threads-3-mb-smart-cache-desktop-processor/p/itm8f67aefba0795?pid=PSRFGWFWMZHGQYAZ&marketplace=FLIPKART&q=intel&srno=s_7_280&fm=organic&ppt=sp&ppn=sp&qH=4e5bbaeafc82ab7a"
-product_fullName = aa.split("/")[3]
-product_id = aa.split("/")[5].split("?")[0]
+baseURL = "https://www.flipkart.com/intel-core-i3-4130t-2-9-ghz-lga-1150-socket-2-cores-4-threads-3-mb-smart-cache-desktop-processor/p/itm8f67aefba0795?pid=PSRFGWFWMZHGQYAZ&marketplace=FLIPKART&q=intel&srno=s_7_280&fm=organic&ppt=sp&ppn=sp&qH=4e5bbaeafc82ab7a"
+product_fullName = baseURL.split("/")[3]
+product_id = baseURL.split("/")[5].split("?")[0]
 
 product_url = (
     "https://www.flipkart.com/"
